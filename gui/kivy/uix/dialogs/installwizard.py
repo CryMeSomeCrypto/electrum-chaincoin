@@ -15,8 +15,8 @@ from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.utils import platform
 
-from electrum_dash.base_wizard import BaseWizard
-from electrum_dash.util import is_valid_email
+from electrum_chaincoin.base_wizard import BaseWizard
+from electrum_chaincoin.util import is_valid_email
 
 
 from . import EventsDialog
@@ -31,7 +31,7 @@ test_xpub = "xpub661MyMwAqRbcEbvVtRRSjqxVnaWVUMewVzMiURAKyYratih4TtBpMypzzefmv8z
 
 Builder.load_string('''
 #:import Window kivy.core.window.Window
-#:import _ electrum_dash_gui.kivy.i18n._
+#:import _ electrum_chaincoin_gui.kivy.i18n._
 
 
 <WizardTextInput@TextInput>
@@ -87,7 +87,7 @@ Builder.load_string('''
             height: self.minimum_height
             Label:
                 color: root.text_color
-                text: 'ELECTRUM DASH'
+                text: 'ELECTRUM CHAINCOIN'
                 size_hint: 1, None
                 height: self.texture_size[1] if self.opacity else 0
                 font_size: '33sp'
@@ -759,8 +759,8 @@ class RestoreSeedDialog(WizardDialog):
     def __init__(self, wizard, **kwargs):
         super(RestoreSeedDialog, self).__init__(wizard, **kwargs)
         self._test = kwargs['test']
-        from electrum_dash.mnemonic import Mnemonic
-        from electrum_dash.old_mnemonic import words as old_wordlist
+        from electrum_chaincoin.mnemonic import Mnemonic
+        from electrum_chaincoin.old_mnemonic import words as old_wordlist
         self.words = set(Mnemonic('en').wordlist).union(set(old_wordlist))
         self.ids.text_input_seed.text = test_seed if is_test else ''
         self.message = _('Please type your seed phrase using the virtual keyboard.')

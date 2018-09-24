@@ -27,11 +27,11 @@
 import threading
 
 from PyQt5.Qt import QVBoxLayout, QLabel
-from electrum_dash_gui.qt.password_dialog import PasswordDialog, PW_PASSPHRASE
-from electrum_dash_gui.qt.util import *
+from electrum_chaincoin_gui.qt.password_dialog import PasswordDialog, PW_PASSPHRASE
+from electrum_chaincoin_gui.qt.util import *
 
-from electrum_dash.i18n import _
-from electrum_dash.util import PrintError
+from electrum_chaincoin.i18n import _
+from electrum_chaincoin.util import PrintError
 
 # The trickiest thing about this handler was getting windows properly
 # parented on macOS.
@@ -177,9 +177,9 @@ class QtHandlerBase(QObject, PrintError):
 
 
 
-from electrum_dash.plugins import hook
-from electrum_dash.util import UserCancelled
-from electrum_dash_gui.qt.main_window import StatusBarButton
+from electrum_chaincoin.plugins import hook
+from electrum_chaincoin.util import UserCancelled
+from electrum_chaincoin_gui.qt.main_window import StatusBarButton
 
 class QtPluginBase(object):
 

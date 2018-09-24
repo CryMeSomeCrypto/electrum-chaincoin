@@ -28,8 +28,8 @@ import os
 
 import requests
 
-from electrum_dash import ELECTRUM_VERSION, constants
-from electrum_dash.i18n import _
+from electrum_chaincoin import ELECTRUM_VERSION, constants
+from electrum_chaincoin.i18n import _
 
 
 class BaseCrashReporter(object):
@@ -42,13 +42,13 @@ class BaseCrashReporter(object):
 
 <h2>Additional information</h2>
 <ul>
-  <li>Electrum-DASH version: {app_version}</li>
+  <li>Electrum-CHAINCOIN version: {app_version}</li>
   <li>Operating system: {os}</li>
   <li>Wallet type: {wallet_type}</li>
   <li>Locale: {locale}</li>
 </ul>
     """
-    CRASH_MESSAGE = _('Something went wrong while executing Electrum-DASH.')
+    CRASH_MESSAGE = _('Something went wrong while executing Electrum-CHAINCOIN.')
     CRASH_TITLE = _('Sorry!')
     REQUEST_HELP_MESSAGE = _('To help us diagnose and fix the problem, you can send us a bug report that contains '
                              'useful debug information:')

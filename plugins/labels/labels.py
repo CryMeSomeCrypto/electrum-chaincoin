@@ -7,10 +7,10 @@ import traceback
 
 import base64
 
-import electrum_dash
-from electrum_dash.plugins import BasePlugin, hook
-from electrum_dash.crypto import aes_encrypt_with_iv, aes_decrypt_with_iv
-from electrum_dash.i18n import _
+import electrum_chaincoin
+from electrum_chaincoin.plugins import BasePlugin, hook
+from electrum_chaincoin.crypto import aes_encrypt_with_iv, aes_decrypt_with_iv
+from electrum_chaincoin.i18n import _
 
 
 class LabelsPlugin(BasePlugin):

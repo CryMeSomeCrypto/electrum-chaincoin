@@ -6,7 +6,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import (QLineEdit, QStyle, QStyleOptionFrame)
 
-from electrum_dash.util import (format_satoshis_plain, decimal_point_to_base_unit_name,
+from electrum_chaincoin.util import (format_satoshis_plain, decimal_point_to_base_unit_name,
                                 FEERATE_PRECISION, quantize_feerate)
 from .util import ColorScheme
 

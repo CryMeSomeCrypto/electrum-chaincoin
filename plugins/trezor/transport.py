@@ -1,4 +1,4 @@
-from electrum_dash.util import PrintError
+from electrum_chaincoin.util import PrintError
 
 
 class TrezorTransport(PrintError):

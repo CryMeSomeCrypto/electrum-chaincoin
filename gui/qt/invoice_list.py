@@ -23,8 +23,8 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from electrum_dash.i18n import _
-from electrum_dash.util import format_time
+from electrum_chaincoin.i18n import _
+from electrum_chaincoin.util import format_time
 
 from .util import *
 

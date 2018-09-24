@@ -38,16 +38,16 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import PyQt5.QtCore as QtCore
 
-from electrum_dash.i18n import _, set_language
-from electrum_dash.plugins import run_hook
-from electrum_dash import WalletStorage
-from electrum_dash.base_wizard import GoBack
-# from electrum_dash.synchronizer import Synchronizer
-# from electrum_dash.verifier import SPV
-# from electrum_dash.util import DebugMem
-from electrum_dash.util import (UserCancelled, print_error,
+from electrum_chaincoin.i18n import _, set_language
+from electrum_chaincoin.plugins import run_hook
+from electrum_chaincoin import WalletStorage
+from electrum_chaincoin.base_wizard import GoBack
+# from electrum_chaincoin.synchronizer import Synchronizer
+# from electrum_chaincoin.verifier import SPV
+# from electrum_chaincoin.util import DebugMem
+from electrum_chaincoin.util import (UserCancelled, print_error,
                                 WalletFileException, BitcoinException)
-# from electrum_dash.wallet import Abstract_Wallet
+# from electrum_chaincoin.wallet import Abstract_Wallet
 
 from .installwizard import InstallWizard
 
@@ -57,7 +57,7 @@ try:
 except Exception as e:
     print(e)
     print("Error: Could not find icons file.")
-    print("Please run 'pyrcc5 icons.qrc -o gui/qt/icons_rc.py', and reinstall Electrum-DASH")
+    print("Please run 'pyrcc5 icons.qrc -o gui/qt/icons_rc.py', and reinstall Electrum-CHAINCOIN")
     sys.exit(1)
 
 from .util import *   # * needed for plugins
@@ -98,7 +98,7 @@ class ElectrumGui:
         if hasattr(QtCore.Qt, "AA_ShareOpenGLContexts"):
             QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
         if hasattr(QGuiApplication, 'setDesktopFileName'):
-            QGuiApplication.setDesktopFileName('electrum-dash.desktop')
+            QGuiApplication.setDesktopFileName('electrum-chaincoin.desktop')
         self.config = config
         self.daemon = daemon
         self.plugins = plugins
@@ -112,7 +112,7 @@ class ElectrumGui:
         # init tray
         self.dark_icon = self.config.get("dark_icon", False)
         self.tray = QSystemTrayIcon(self.tray_icon(), None)
-        self.tray.setToolTip('Electrum-DASH')
+        self.tray.setToolTip('Electrum-CHAINCOIN')
         self.tray.activated.connect(self.tray_activated)
         self.build_tray_menu()
         self.tray.show()
@@ -124,11 +124,11 @@ class ElectrumGui:
         use_dark_theme = self.config.get('qt_gui_color_theme', 'default') == 'dark'
         self.app.setStyle('Fusion')
         if use_dark_theme:
-            from .dark_dash_style import dash_stylesheet
-            self.app.setStyleSheet(dash_stylesheet)
+            from .dark_chaincoin_style import chaincoin_stylesheet
+            self.app.setStyleSheet(chaincoin_stylesheet)
         else:
-            from .dash_style import dash_stylesheet
-            self.app.setStyleSheet(dash_stylesheet)
+            from .chaincoin_style import chaincoin_stylesheet
+            self.app.setStyleSheet(chaincoin_stylesheet)
         # Even if we ourselves don't set the dark theme,
         # the OS/window manager/etc might set *a dark theme*.
         # Hence, try to choose colors accordingly:
@@ -148,7 +148,7 @@ class ElectrumGui:
             submenu.addAction(_("Close"), window.close)
         m.addAction(_("Dark/Light"), self.toggle_tray_icon)
         m.addSeparator()
-        m.addAction(_("Exit Electrum-DASH"), self.close)
+        m.addAction(_("Exit Electrum-CHAINCOIN"), self.close)
 
     def tray_icon(self):
         if self.dark_icon:
@@ -180,7 +180,7 @@ class ElectrumGui:
 
     def show_network_dialog(self, parent):
         if not self.daemon.network:
-            parent.show_warning(_('You are using Electrum-DASH in offline mode; restart Electrum-DASH if you want to get connected'), title=_('Offline'))
+            parent.show_warning(_('You are using Electrum-CHAINCOIN in offline mode; restart Electrum-CHAINCOIN if you want to get connected'), title=_('Offline'))
             return
         if self.nd:
             self.nd.on_update()

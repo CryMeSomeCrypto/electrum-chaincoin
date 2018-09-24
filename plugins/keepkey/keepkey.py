@@ -2,16 +2,16 @@ from binascii import hexlify, unhexlify
 import traceback
 import sys
 
-from electrum_dash.util import bfh, bh2u, UserCancelled
-from electrum_dash.bitcoin import (b58_address_to_hash160, xpub_from_pubkey,
+from electrum_chaincoin.util import bfh, bh2u, UserCancelled
+from electrum_chaincoin.bitcoin import (b58_address_to_hash160, xpub_from_pubkey,
                                    TYPE_ADDRESS, TYPE_SCRIPT)
-from electrum_dash import constants
-from electrum_dash.i18n import _
-from electrum_dash.plugins import BasePlugin
-from electrum_dash.transaction import deserialize, Transaction
-from electrum_dash.keystore import Hardware_KeyStore, is_xpubkey, parse_xpubkey
-from electrum_dash.wallet import Standard_Wallet
-from electrum_dash.base_wizard import ScriptTypeNotSupported
+from electrum_chaincoin import constants
+from electrum_chaincoin.i18n import _
+from electrum_chaincoin.plugins import BasePlugin
+from electrum_chaincoin.transaction import deserialize, Transaction
+from electrum_chaincoin.keystore import Hardware_KeyStore, is_xpubkey, parse_xpubkey
+from electrum_chaincoin.wallet import Standard_Wallet
+from electrum_chaincoin.base_wizard import ScriptTypeNotSupported
 
 from ..hw_wallet import HW_PluginBase
 from ..hw_wallet.plugin import is_any_tx_output_on_change_branch
@@ -153,7 +153,7 @@ class KeepKeyPlugin(HW_PluginBase):
         return client
 
     def get_coin_name(self):
-        return "DashTestnet" if constants.net.TESTNET else "Dash"
+        return "ChaincoinTestnet" if constants.net.TESTNET else "Chaincoin"
 
     def initialize_device(self, device_id, wizard, handler):
         # Initialization method

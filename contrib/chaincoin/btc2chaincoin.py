@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Search and replaces BTC addresses and private keys in WIF to DASH variant"""
+"""Search and replaces BTC addresses and private keys in WIF to CHAINCOIN variant"""
 
 import click
 import imp

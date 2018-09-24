@@ -26,13 +26,13 @@
 import webbrowser
 import datetime
 
-from electrum_dash.wallet import AddTransactionException, TX_HEIGHT_LOCAL
+from electrum_chaincoin.wallet import AddTransactionException, TX_HEIGHT_LOCAL
 from .util import *
-from electrum_dash.i18n import _
-from electrum_dash.util import block_explorer_URL, profiler
+from electrum_chaincoin.i18n import _
+from electrum_chaincoin.util import block_explorer_URL, profiler
 
 try:
-    from electrum_dash.plot import plot_history, NothingToPlotException
+    from electrum_chaincoin.plot import plot_history, NothingToPlotException
 except:
     plot_history = None
 
@@ -174,13 +174,13 @@ class HistoryList(MyTreeWidget, AcceptFileDragDrop):
         grid = QGridLayout()
         grid.addWidget(QLabel(_("Start")), 0, 0)
         grid.addWidget(QLabel(self.format_date(start_date)), 0, 1)
-        grid.addWidget(QLabel(str(h.get('start_fiat_value')) + '/DASH'), 0, 2)
+        grid.addWidget(QLabel(str(h.get('start_fiat_value')) + '/CHAINCOIN'), 0, 2)
         grid.addWidget(QLabel(_("Initial balance")), 1, 0)
         grid.addWidget(QLabel(format_amount(h['start_balance'])), 1, 1)
         grid.addWidget(QLabel(str(h.get('start_fiat_balance'))), 1, 2)
         grid.addWidget(QLabel(_("End")), 2, 0)
         grid.addWidget(QLabel(self.format_date(end_date)), 2, 1)
-        grid.addWidget(QLabel(str(h.get('end_fiat_value')) + '/DASH'), 2, 2)
+        grid.addWidget(QLabel(str(h.get('end_fiat_value')) + '/CHAINCOIN'), 2, 2)
         grid.addWidget(QLabel(_("Final balance")), 4, 0)
         grid.addWidget(QLabel(format_amount(h['end_balance'])), 4, 1)
         grid.addWidget(QLabel(str(h.get('end_fiat_balance'))), 4, 2)
@@ -378,7 +378,7 @@ class HistoryList(MyTreeWidget, AcceptFileDragDrop):
         d = WindowModalDialog(self, _('Export History'))
         d.setMinimumSize(400, 200)
         vbox = QVBoxLayout(d)
-        defaultname = os.path.expanduser('~/electrum-dash-history.csv')
+        defaultname = os.path.expanduser('~/electrum-chaincoin-history.csv')
         select_msg = _('Select file to export your wallet transactions to')
         hbox, filename_e, csv_button = filename_field(self, self.config, defaultname, select_msg)
         vbox.addLayout(hbox)
@@ -395,7 +395,7 @@ class HistoryList(MyTreeWidget, AcceptFileDragDrop):
         try:
             self.do_export_history(self.wallet, filename, csv_button.isChecked())
         except (IOError, os.error) as reason:
-            export_error_label = _("Electrum-DASH was unable to produce a transaction export.")
+            export_error_label = _("Electrum-CHAINCOIN was unable to produce a transaction export.")
             self.parent.show_critical(export_error_label + "\n" + str(reason), title=_("Unable to export history"))
             return
         self.parent.show_message(_("Your wallet history has been successfully exported."))
@@ -416,5 +416,5 @@ class HistoryList(MyTreeWidget, AcceptFileDragDrop):
                 for line in lines:
                     transaction.writerow(line)
             else:
-                from electrum_dash.util import json_encode
+                from electrum_chaincoin.util import json_encode
                 f.write(json_encode(history))

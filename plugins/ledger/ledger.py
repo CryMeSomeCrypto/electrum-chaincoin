@@ -3,20 +3,20 @@ import hashlib
 import sys
 import traceback
 
-from electrum_dash import bitcoin
-from electrum_dash import constants
-from electrum_dash.bitcoin import (TYPE_ADDRESS, int_to_hex, var_int,
+from electrum_chaincoin import bitcoin
+from electrum_chaincoin import constants
+from electrum_chaincoin.bitcoin import (TYPE_ADDRESS, int_to_hex, var_int,
                                    b58_address_to_hash160,
                                    hash160_to_b58_address)
-from electrum_dash.i18n import _
-from electrum_dash.plugins import BasePlugin
-from electrum_dash.keystore import Hardware_KeyStore
-from electrum_dash.transaction import Transaction
-from electrum_dash.wallet import Standard_Wallet
+from electrum_chaincoin.i18n import _
+from electrum_chaincoin.plugins import BasePlugin
+from electrum_chaincoin.keystore import Hardware_KeyStore
+from electrum_chaincoin.transaction import Transaction
+from electrum_chaincoin.wallet import Standard_Wallet
 from ..hw_wallet import HW_PluginBase
 from ..hw_wallet.plugin import is_any_tx_output_on_change_branch
-from electrum_dash.util import print_error, is_verbose, bfh, bh2u, versiontuple
-from electrum_dash.base_wizard import ScriptTypeNotSupported
+from electrum_chaincoin.util import print_error, is_verbose, bfh, bh2u, versiontuple
+from electrum_chaincoin.base_wizard import ScriptTypeNotSupported
 
 
 def setAlternateCoinVersions(self, regular, p2sh):
@@ -191,7 +191,7 @@ class Ledger_Client():
                 self.perform_hw1_preflight()
             except BTChipException as e:
                 if (e.sw == 0x6d00 or e.sw == 0x6700):
-                    raise Exception(_("Device not in Dash mode")) from e
+                    raise Exception(_("Device not in Chaincoin mode")) from e
                 raise e
             self.preflightDone = True
 

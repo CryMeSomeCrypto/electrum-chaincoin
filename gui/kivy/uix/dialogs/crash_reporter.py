@@ -10,8 +10,8 @@ from kivy.uix.label import Label
 from kivy.utils import platform
 
 
-from electrum_dash.base_crash_reporter import BaseCrashReporter
-from electrum_dash.i18n import _
+from electrum_chaincoin.base_crash_reporter import BaseCrashReporter
+from electrum_chaincoin.i18n import _
 
 
 Builder.load_string('''
@@ -87,7 +87,7 @@ class CrashReporter(BaseCrashReporter, Factory.Popup):
 
 
 [b]Additional information[/b]
- * Electrum-DASH version: {app_version}
+ * Electrum-CHAINCOIN version: {app_version}
  * Operating system: {os}
  * Wallet type: {wallet_type}
  * Locale: {locale}

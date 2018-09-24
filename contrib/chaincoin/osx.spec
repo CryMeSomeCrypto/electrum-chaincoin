@@ -1,4 +1,6 @@
 # -*- mode: python -*-
+import os
+import os.path
 import sys
 from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 
@@ -9,6 +11,8 @@ for i, x in enumerate(sys.argv):
         break
 else:
     raise Exception('no name')
+
+PY36BINDIR =  os.environ.get('PY36BINDIR')
 
 hiddenimports = collect_submodules('trezorlib')
 hiddenimports += collect_submodules('btchip')
@@ -41,22 +45,21 @@ hiddenimports += [
 ]
 
 datas = [
-    ('lib/servers.json', 'electrum_dash'),
-    ('lib/servers_testnet.json', 'electrum_dash'),
-    ('lib/servers_regtest.json', 'electrum_dash'),
-    ('lib/currencies.json', 'electrum_dash'),
-    ('lib/checkpoints.json', 'electrum_dash'),
-    ('lib/locale', 'electrum_dash/locale'),
-    ('lib/wordlist', 'electrum_dash/wordlist'),
-    ('C:\\zbarw', '.'),
+    ('lib/servers.json', 'electrum_chaincoin'),
+    ('lib/servers_testnet.json', 'electrum_chaincoin'),
+    ('lib/servers_regtest.json', 'electrum_chaincoin'),
+    ('lib/currencies.json', 'electrum_chaincoin'),
+    ('lib/checkpoints.json', 'electrum_chaincoin'),
+    ('lib/locale', 'electrum_chaincoin/locale'),
+    ('lib/wordlist', 'electrum_chaincoin/wordlist'),
 ]
 datas += collect_data_files('trezorlib')
 datas += collect_data_files('btchip')
 datas += collect_data_files('keepkeylib')
 
-binaries = [('C:/Python35/libusb-1.0.dll', '.')]
-binaries += [('C:/x11_hash/libx11hash-0.dll', '.')]
-binaries += [('C:/libsecp256k1/libsecp256k1.dll', '.')]
+binaries = [('../libusb-1.0.dylib', '.')]
+binaries += [('../libsecp256k1.0.dylib', '.')]
+binaries += [('/usr/local/lib/libgmp.10.dylib', '.')]
 
 # https://github.com/pyinstaller/pyinstaller/wiki/Recipe-remove-tkinter-tcl
 sys.modules['FixTk'] = None
@@ -101,7 +104,7 @@ excludes += [
     'PyQt5.QtWinExtras',
 ]
 
-a = Analysis(['electrum-dash'],
+a = Analysis(['electrum-chaincoin'],
              pathex=['plugins'],
              hiddenimports=hiddenimports,
              datas=datas,
@@ -115,14 +118,14 @@ for d in a.datas:
         a.datas.remove(d)
         break
 
-# Add TOC to electrum_dash, electrum_dash_gui, electrum_dash_plugins
+# Add TOC to electrum_chaincoin, electrum_chaincoin_gui, electrum_chaincoin_plugins
 for p in sorted(a.pure):
     if p[0].startswith('lib') and p[2] == 'PYMODULE':
-        a.pure += [('electrum_dash%s' % p[0][3:] , p[1], p[2])]
+        a.pure += [('electrum_chaincoin%s' % p[0][3:] , p[1], p[2])]
     if p[0].startswith('gui') and p[2] == 'PYMODULE':
-        a.pure += [('electrum_dash_gui%s' % p[0][3:] , p[1], p[2])]
+        a.pure += [('electrum_chaincoin_gui%s' % p[0][3:] , p[1], p[2])]
     if p[0].startswith('plugins') and p[2] == 'PYMODULE':
-        a.pure += [('electrum_dash_plugins%s' % p[0][7:] , p[1], p[2])]
+        a.pure += [('electrum_chaincoin_plugins%s' % p[0][7:] , p[1], p[2])]
 
 pyz = PYZ(a.pure)
 
@@ -133,27 +136,12 @@ exe = EXE(pyz,
           strip=False,
           upx=False,
           console=False,
-          icon='icons/electrum-dash.ico',
-          name=os.path.join('build\\pyi.win32\\electrum', cmdline_name))
+          icon='icons/electrum-chaincoin.ico',
+          name=os.path.join('build/electrum-chaincoin/electrum-chaincoin', cmdline_name))
 
-# exe with console output
-conexe = EXE(pyz,
-          a.scripts,
-          exclude_binaries=True,
-          debug=False,
-          strip=False,
-          upx=False,
-          console=True,
-          icon='icons/electrum-dash.ico',
-          name=os.path.join('build\\pyi.win32\\electrum',
-                            'console-%s' % cmdline_name))
-
-# trezorctl separate executable
-tctl_a = Analysis(['C:/Python35/Scripts/trezorctl'],
-                  hiddenimports=[
-                    'pkgutil',
-                    'win32api',
-                  ],
+# trezorctl separate bin
+tctl_a = Analysis([os.path.join(PY36BINDIR, 'trezorctl')],
+                  hiddenimports=['pkgutil'],
                   excludes=excludes,
                   runtime_hooks=['pyi_tctl_runtimehook.py'])
 
@@ -166,11 +154,17 @@ tctl_exe = EXE(tctl_pyz,
            strip=False,
            upx=False,
            console=True,
-           name=os.path.join('build\\pyi.win32\\electrum', 'trezorctl.exe'))
+           name=os.path.join('build/electrum-chaincoin/electrum-chaincoin', 'trezorctl.bin'))
 
-coll = COLLECT(exe, conexe, #tctl_exe,
+coll = COLLECT(exe, #tctl_exe,
                a.binaries,
                a.datas,
                strip=False,
                upx=False,
-               name=os.path.join('dist', 'electrum-dash'))
+               name=os.path.join('dist', 'electrum-chaincoin'))
+
+app = BUNDLE(coll,
+             name=os.path.join('dist', 'Electrum-CHAINCOIN.app'),
+             appname="Electrum-CHAINCOIN",
+	         icon='electrum-chaincoin.icns',
+             version = 'ELECTRUM_VERSION')

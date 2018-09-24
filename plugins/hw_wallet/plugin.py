@@ -24,9 +24,9 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from electrum_dash.plugins import BasePlugin, hook
-from electrum_dash.i18n import _
-from electrum_dash.bitcoin import is_address
+from electrum_chaincoin.plugins import BasePlugin, hook
+from electrum_chaincoin.i18n import _
+from electrum_chaincoin.bitcoin import is_address
 
 
 class HW_PluginBase(BasePlugin):
@@ -67,7 +67,7 @@ class HW_PluginBase(BasePlugin):
         if keystore is None:
             keystore = wallet.get_keystore()
         if not is_address(address):
-            keystore.handler.show_error(_('Invalid Dash Address'))
+            keystore.handler.show_error(_('Invalid Chaincoin Address'))
             return False
         if not wallet.is_mine(address):
             keystore.handler.show_error(_('Address not in wallet.'))

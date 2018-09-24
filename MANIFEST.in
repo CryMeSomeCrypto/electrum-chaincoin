@@ -1,9 +1,9 @@
 include LICENCE RELEASE-NOTES AUTHORS
 include README.rst
-include electrum-dash.conf.sample
-include electrum-dash.desktop
+include electrum-chaincoin.conf.sample
+include electrum-chaincoin.desktop
 include *.py
-include electrum-dash
+include electrum-chaincoin
 include contrib/requirements/requirements.txt
 include contrib/requirements/requirements-hw.txt
 recursive-include lib *.py

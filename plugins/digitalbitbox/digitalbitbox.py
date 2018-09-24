@@ -4,20 +4,20 @@
 #
 
 try:
-    import electrum_dash
-    from electrum_dash.crypto import Hash, EncodeAES, DecodeAES
-    from electrum_dash.bitcoin import (TYPE_ADDRESS, push_script, var_int, public_key_to_p2pkh, is_address,
+    import electrum_chaincoin
+    from electrum_chaincoin.crypto import Hash, EncodeAES, DecodeAES
+    from electrum_chaincoin.bitcoin import (TYPE_ADDRESS, push_script, var_int, public_key_to_p2pkh, is_address,
                                   serialize_xpub, deserialize_xpub)
-    from electrum_dash import ecc
-    from electrum_dash.ecc import msg_magic
-    from electrum_dash.wallet import Standard_Wallet
-    from electrum_dash import constants
-    from electrum_dash.transaction import Transaction
-    from electrum_dash.i18n import _
-    from electrum_dash.keystore import Hardware_KeyStore
+    from electrum_chaincoin import ecc
+    from electrum_chaincoin.ecc import msg_magic
+    from electrum_chaincoin.wallet import Standard_Wallet
+    from electrum_chaincoin import constants
+    from electrum_chaincoin.transaction import Transaction
+    from electrum_chaincoin.i18n import _
+    from electrum_chaincoin.keystore import Hardware_KeyStore
     from ..hw_wallet import HW_PluginBase
-    from electrum_dash.util import print_error, to_string, UserCancelled
-    from electrum_dash.base_wizard import ScriptTypeNotSupported, HWD_SETUP_NEW_WALLET
+    from electrum_chaincoin.util import print_error, to_string, UserCancelled
+    from electrum_chaincoin.base_wizard import ScriptTypeNotSupported, HWD_SETUP_NEW_WALLET
 
     import time
     import hid
@@ -290,8 +290,8 @@ class DigitalBitbox_Client():
 
     def dbb_generate_wallet(self):
         key = self.stretch_key(self.password)
-        filename = ("Electrum-DASH-" + time.strftime("%Y-%m-%d-%H-%M-%S") + ".pdf")
-        msg = ('{"seed":{"source": "create", "key": "%s", "filename": "%s", "entropy": "%s"}}' % (key, filename, 'Digital Bitbox Electrum-DASH Plugin')).encode('utf8')
+        filename = ("Electrum-CHAINCOIN-" + time.strftime("%Y-%m-%d-%H-%M-%S") + ".pdf")
+        msg = ('{"seed":{"source": "create", "key": "%s", "filename": "%s", "entropy": "%s"}}' % (key, filename, 'Digital Bitbox Electrum-CHAINCOIN Plugin')).encode('utf8')
         reply = self.hid_send_encrypt(msg)
         if 'error' in reply:
             raise Exception(reply['error']['message'])

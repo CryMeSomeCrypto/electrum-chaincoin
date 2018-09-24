@@ -41,13 +41,13 @@ class ExchangeBase(PrintError):
     def get_json(self, site, get_string):
         # APIs must have https
         url = ''.join(['https://', site, get_string])
-        response = requests.request('GET', url, headers={'User-Agent' : 'Electrum-DASH'}, timeout=10)
+        response = requests.request('GET', url, headers={'User-Agent' : 'Electrum-CHAINCOIN'}, timeout=10)
         return response.json()
 
     def get_csv(self, site, get_string):
         url = ''.join(['https://', site, get_string])
         response = requests.request('GET', url, headers={
-            'User-Agent': 'Electrum-DASH'
+            'User-Agent': 'Electrum-CHAINCOIN'
         })
         reader = csv.DictReader(response.content.decode().split('\n'))
         return list(reader)
@@ -127,7 +127,7 @@ class BitcoinAverage(ExchangeBase):
 
     def get_rates(self, ccy):
         json = self.get_json('apiv2.bitcoinaverage.com',
-                             '/indices/local/ticker/DASH%s' % ccy)
+                             '/indices/local/ticker/CHAINCOIN%s' % ccy)
         return {ccy: Decimal(json['last'])}
 
 
@@ -136,7 +136,7 @@ class BitcoinAverage(ExchangeBase):
 
     def request_history(self, ccy):
         history = self.get_json('apiv2.bitcoinaverage.com',
-                               "/indices/local/history/DASH%s"
+                               "/indices/local/history/CHAINCOIN%s"
                                "?period=alltime&format=json" % ccy)
         return dict([(h['time'][:10], h['average']) for h in history])
 
@@ -144,7 +144,7 @@ class BitcoinAverage(ExchangeBase):
 class Bittrex(ExchangeBase):
     def get_rates(self, ccy):
         json = self.get_json('bittrex.com',
-                             '/api/v1.1/public/getticker?market=%s-DASH' % ccy)
+                             '/api/v1.1/public/getticker?market=%s-CHAINCOIN' % ccy)
         quote_currencies = {}
         if not json.get('success', False):
             return quote_currencies
@@ -157,14 +157,14 @@ class Poloniex(ExchangeBase):
     def get_rates(self, ccy):
         json = self.get_json('poloniex.com', '/public?command=returnTicker')
         quote_currencies = {}
-        dash_ticker = json.get('BTC_DASH')
-        quote_currencies['BTC'] = Decimal(dash_ticker['last'])
+        chaincoin_ticker = json.get('BTC_CHAINCOIN')
+        quote_currencies['BTC'] = Decimal(chaincoin_ticker['last'])
         return quote_currencies
 
 
 class CoinMarketCap(ExchangeBase):
     def get_rates(self, ccy):
-        json = self.get_json('api.coinmarketcap.com', '/v1/ticker/dash/')
+        json = self.get_json('api.coinmarketcap.com', '/v1/ticker/chaincoin/')
         quote_currencies = {}
         if not isinstance(json, list):
             return quote_currencies

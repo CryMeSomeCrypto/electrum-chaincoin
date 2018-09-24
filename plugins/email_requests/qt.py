@@ -42,11 +42,11 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import (QVBoxLayout, QLabel, QGridLayout, QLineEdit,
                              QInputDialog)
 
-from electrum_dash.plugins import BasePlugin, hook
-from electrum_dash.paymentrequest import PaymentRequest
-from electrum_dash.i18n import _
-from electrum_dash.util import PrintError
-from electrum_dash_gui.qt.util import (EnterButton, Buttons, CloseButton, OkButton,
+from electrum_chaincoin.plugins import BasePlugin, hook
+from electrum_chaincoin.paymentrequest import PaymentRequest
+from electrum_chaincoin.i18n import _
+from electrum_chaincoin.util import PrintError
+from electrum_chaincoin_gui.qt.util import (EnterButton, Buttons, CloseButton, OkButton,
                                        WindowModalDialog, get_parent_main_window)
 
 
@@ -80,7 +80,7 @@ class Processor(threading.Thread, PrintError):
                 p = [p]
                 continue
             for item in p:
-                if item.get_content_type() == "application/dash-paymentrequest":
+                if item.get_content_type() == "application/chaincoin-paymentrequest":
                     pr_str = item.get_payload()
                     pr_str = base64.b64decode(pr_str)
                     self.on_receive(pr_str)
@@ -110,10 +110,10 @@ class Processor(threading.Thread, PrintError):
         msg['Subject'] = message
         msg['To'] = recipient
         msg['From'] = self.username
-        part = MIMEBase('application', "dash-paymentrequest")
+        part = MIMEBase('application', "chaincoin-paymentrequest")
         part.set_payload(payment_request)
         encode_base64(part)
-        part.add_header('Content-Disposition', 'attachment; filename="payreq.dash"')
+        part.add_header('Content-Disposition', 'attachment; filename="payreq.chaincoin"')
         msg.attach(part)
         try:
             s = smtplib.SMTP_SSL(self.imap_server, timeout=2)
@@ -175,7 +175,7 @@ class Plugin(BasePlugin):
         menu.addAction(_("Send via e-mail"), lambda: self.send(window, addr))
 
     def send(self, window, addr):
-        from electrum_dash import paymentrequest
+        from electrum_chaincoin import paymentrequest
         r = window.wallet.receive_requests.get(addr)
         message = r.get('memo', '')
         if r.get('signature'):

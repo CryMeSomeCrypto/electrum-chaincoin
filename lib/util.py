@@ -42,13 +42,13 @@ def inv_dict(d):
     return {v: k for k, v in d.items()}
 
 
-base_units = {'DASH':8, 'mDASH':5, 'uDASH':2, 'duffs':0}
+base_units = {'CHAINCOIN':8, 'mCHAINCOIN':5, 'uCHAINCOIN':2, 'duffs':0}
 base_units_inverse = inv_dict(base_units)
-base_units_list = ['DASH', 'mDASH', 'uDASH', 'duffs']  # list(dict) does not guarantee order
+base_units_list = ['CHAINCOIN', 'mCHAINCOIN', 'uCHAINCOIN', 'duffs']  # list(dict) does not guarantee order
 
 
 def decimal_point_to_base_unit_name(dp: int) -> str:
-    # e.g. 8 -> "DASH"
+    # e.g. 8 -> "CHAINCOIN"
     try:
         return base_units_inverse[dp]
     except KeyError:
@@ -56,7 +56,7 @@ def decimal_point_to_base_unit_name(dp: int) -> str:
 
 
 def base_unit_name_to_decimal_point(unit_name: str) -> int:
-    # e.g. "DASH" -> 8
+    # e.g. "CHAINCOIN" -> 8
     try:
         return base_units[unit_name]
     except KeyError:
@@ -135,7 +135,7 @@ class Satoshis(object):
         return 'Duffs(%d)'%self.value
 
     def __str__(self):
-        return format_satoshis(self.value) + " DASH"
+        return format_satoshis(self.value) + " CHAINCOIN"
 
 class Fiat(object):
     def __new__(cls, value, ccy):
@@ -336,7 +336,7 @@ def android_data_dir():
     return PythonActivity.mActivity.getFilesDir().getPath() + '/data'
 
 def android_headers_dir():
-    d = android_ext_dir() + '/org.dash.electrum.electrum_dash'
+    d = android_ext_dir() + '/org.chaincoin.electrum.electrum_chaincoin'
     if not os.path.exists(d):
         os.mkdir(d)
     return d
@@ -345,7 +345,7 @@ def android_check_data_dir():
     """ if needed, move old directory to sandbox """
     ext_dir = android_ext_dir()
     data_dir = android_data_dir()
-    old_electrum_dir = ext_dir + '/electrum-dash'
+    old_electrum_dir = ext_dir + '/electrum-chaincoin'
     if not os.path.exists(data_dir) and os.path.exists(old_electrum_dir):
         import shutil
         new_headers_path = android_headers_dir() + '/blockchain_headers'
@@ -368,7 +368,7 @@ def assert_datadir_available(config_path):
         return
     else:
         raise FileNotFoundError(
-            'Electrum-DASH datadir does not exist. Was it deleted while running?' + '\n' +
+            'Electrum-CHAINCOIN datadir does not exist. Was it deleted while running?' + '\n' +
             'Should be at {}'.format(path))
 
 
@@ -447,11 +447,11 @@ def user_dir():
     if 'ANDROID_DATA' in os.environ:
         return android_check_data_dir()
     elif os.name == 'posix':
-        return os.path.join(os.environ["HOME"], ".electrum-dash")
+        return os.path.join(os.environ["HOME"], ".electrum-chaincoin")
     elif "APPDATA" in os.environ:
-        return os.path.join(os.environ["APPDATA"], "Electrum-DASH")
+        return os.path.join(os.environ["APPDATA"], "Electrum-CHAINCOIN")
     elif "LOCALAPPDATA" in os.environ:
-        return os.path.join(os.environ["LOCALAPPDATA"], "Electrum-DASH")
+        return os.path.join(os.environ["LOCALAPPDATA"], "Electrum-CHAINCOIN")
     else:
         #raise Exception("No home directory found in environment variables.")
         return
@@ -568,16 +568,16 @@ def time_difference(distance_in_time, include_seconds):
         return "over %d years" % (round(distance_in_minutes / 525600))
 
 mainnet_block_explorers = {
-    'Dash.org': ('https://explorer.dash.org/',
+    'Chaincoin.org': ('https://explorer.chaincoin.org/',
                        {'tx': 'tx/', 'addr': 'address/'}),
-    'Bchain.info': ('https://bchain.info/DASH/',
+    'Bchain.info': ('https://bchain.info/CHAINCOIN/',
                        {'tx': 'tx/', 'addr': 'addr/'}),
     'system default': ('blockchain:/',
                        {'tx': 'tx/', 'addr': 'address/'}),
 }
 
 testnet_block_explorers = {
-    'Dash.org': ('https://test.insight.dash.siampm.com/',
+    'Chaincoin.org': ('https://test.insight.chaincoin.siampm.com/',
                        {'tx': 'tx/', 'addr': 'address/'}),
     'system default': ('blockchain:/',
                        {'tx': 'tx/', 'addr': 'address/'}),
@@ -588,7 +588,7 @@ def block_explorer_info():
     return testnet_block_explorers if constants.net.TESTNET else mainnet_block_explorers
 
 def block_explorer(config):
-    return config.get('block_explorer', 'Dash.org')
+    return config.get('block_explorer', 'Chaincoin.org')
 
 def block_explorer_tuple(config):
     return block_explorer_info().get(block_explorer(config))
@@ -613,12 +613,12 @@ def parse_URI(uri, on_pr=None):
 
     if ':' not in uri:
         if not bitcoin.is_address(uri):
-            raise Exception("Not a Dash address")
+            raise Exception("Not a Chaincoin address")
         return {'address': uri}
 
     u = urllib.parse.urlparse(uri)
-    if u.scheme != 'dash':
-        raise Exception("Not a Dash URI")
+    if u.scheme != 'chaincoin':
+        raise Exception("Not a Chaincoin URI")
     address = u.path
 
     # python for android fails to parse query
@@ -635,7 +635,7 @@ def parse_URI(uri, on_pr=None):
     out = {k: v[0] for k, v in pq.items()}
     if address:
         if not bitcoin.is_address(address):
-            raise Exception("Invalid Dash address:" + address)
+            raise Exception("Invalid Chaincoin address:" + address)
         out['address'] = address
     if 'amount' in out:
         am = out['amount']
@@ -685,7 +685,7 @@ def create_URI(addr, amount, message):
         query.append('amount=%s'%format_satoshis_plain(amount))
     if message:
         query.append('message=%s'%urllib.parse.quote(message))
-    p = urllib.parse.ParseResult(scheme='dash', netloc='', path=addr, params='', query='&'.join(query), fragment='')
+    p = urllib.parse.ParseResult(scheme='chaincoin', netloc='', path=addr, params='', query='&'.join(query), fragment='')
     return urllib.parse.urlunparse(p)
 
 

@@ -6,16 +6,16 @@ if [[ -z $TRAVIS_TAG ]]; then
   exit 1
 fi
 
-BUILD_REPO_URL=https://github.com/akhavr/electrum-dash.git
+BUILD_REPO_URL=https://github.com/akhavr/electrum-chaincoin.git
 
 cd build
 
-git clone --branch $TRAVIS_TAG $BUILD_REPO_URL electrum-dash
+git clone --branch $TRAVIS_TAG $BUILD_REPO_URL electrum-chaincoin
 
 docker run --rm \
     -v $(pwd):/opt \
-    -w /opt/electrum-dash \
-    -t zebralucky/electrum-dash-winebuild:Linux /opt/build_linux.sh
+    -w /opt/electrum-chaincoin \
+    -t zebralucky/electrum-chaincoin-winebuild:Linux /opt/build_linux.sh
 
 sudo find . -name '*.po' -delete
 sudo find . -name '*.pot' -delete
@@ -38,9 +38,9 @@ docker run --rm \
     -e WINEPREFIX=$WINEPREFIX \
     -e PYHOME=$PYHOME \
     -v $(pwd):/opt \
-    -v $(pwd)/electrum-dash/:$WINEPREFIX/drive_c/electrum-dash \
-    -w /opt/electrum-dash \
-    -t zebralucky/electrum-dash-winebuild:WinePy35 /opt/build_wine.sh
+    -v $(pwd)/electrum-chaincoin/:$WINEPREFIX/drive_c/electrum-chaincoin \
+    -w /opt/electrum-chaincoin \
+    -t zebralucky/electrum-chaincoin-winebuild:WinePy35 /opt/build_wine.sh
 
 export WINEARCH=win64
 export WINEPREFIX=/root/.wine-64
@@ -60,6 +60,6 @@ docker run --rm \
     -e WINEPREFIX=$WINEPREFIX \
     -e PYHOME=$PYHOME \
     -v $(pwd):/opt \
-    -v $(pwd)/electrum-dash/:$WINEPREFIX/drive_c/electrum-dash \
-    -w /opt/electrum-dash \
-    -t zebralucky/electrum-dash-winebuild:WinePy35 /opt/build_wine.sh
+    -v $(pwd)/electrum-chaincoin/:$WINEPREFIX/drive_c/electrum-chaincoin \
+    -w /opt/electrum-chaincoin \
+    -t zebralucky/electrum-chaincoin-winebuild:WinePy35 /opt/build_wine.sh
